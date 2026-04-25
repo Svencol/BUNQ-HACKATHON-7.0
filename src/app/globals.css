@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 :root {
-  --foreground: #111827;
-  --background: #f9fafb;
+  --foreground: #ffffff;
+  --background: #1C1C1C;
 }
 
 body {
@@ -16,6 +16,6 @@ body {
 
 @layer components {
   .input {
-    @apply w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-shadow;
+    @apply w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FF7819] focus:border-transparent transition-shadow bg-white;
   }
 }
