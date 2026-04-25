@@ -8,6 +8,7 @@ import {
   RetailerPrice,
   PriceHistory,
   VendorPrice,
+  ProductEntry,
 } from "./mockData";
 
 export type Recommendation = "BUY" | "WAIT" | "CHOOSE_ALTERNATIVE" | "PRICE_NEEDED";
@@ -96,6 +97,22 @@ const ECOSYSTEM_NOTES: Partial<Record<string, Partial<Record<string, string>>>> 
   },
 };
 
+function normalizeInput(input: string): string {
+  return input.toLowerCase().trim()
+    .replace(/[^a-z0-9\s]/g, ' ')
+    .replace(/\s+/g, ' ').trim();
+}
+
+function getStrongProductMatch(inputName: string): ProductEntry | null {
+  const normalized = normalizeInput(inputName);
+  for (const entry of productDatabase) {
+    if (entry.aliases.some(alias => normalizeInput(alias) === normalized)) {
+      return entry;
+    }
+  }
+  return null;
+}
+
 function getEcosystemSwitchNote(from: string, to: string): string {
   return (
     ECOSYSTEM_NOTES[from]?.[to] ??
@@ -110,23 +127,21 @@ export function analyzeProduct(
   productUrl?: string,
   userBudget?: number
 ): AnalysisResult {
-  const priceKnown = productPrice > 0;
   const category = findCategory(productName);
-  const categoryData = { label: getCategoryLabel(category) };
-  const lower = productName.toLowerCase();
 
-  // Find matching alternatives and vendors
-  let foundInDatabase = false;
-  let alternatives: Alternative[] = [];
-  let entryVendors: VendorPrice[] = [];
-  for (const entry of productDatabase) {
-    if (entry.keywords.some((k) => lower.includes(k))) {
-      alternatives = entry.alternatives;
-      entryVendors = entry.vendors;
-      foundInDatabase = true;
-      break;
-    }
+  // Electronics/entertainment priced below €10 is almost certainly a data entry error
+  if (productPrice > 0 && productPrice < 10 && (category === 'electronics' || category === 'entertainment')) {
+    productPrice = 0;
   }
+
+  const priceKnown = productPrice > 0;
+  const categoryData = { label: getCategoryLabel(category) };
+
+  // Find matching alternatives and vendors — strict alias match only
+  const matchedEntry = getStrongProductMatch(productName);
+  const foundInDatabase = matchedEntry !== null;
+  const alternatives: Alternative[] = matchedEntry ? matchedEntry.alternatives : [];
+  const entryVendors: VendorPrice[] = matchedEntry ? matchedEntry.vendors : [];
 
   const sortedVendors = [...entryVendors].sort((a, b) => a.price - b.price).slice(0, 4);
   const cheapestVendor = sortedVendors[0] ?? null;

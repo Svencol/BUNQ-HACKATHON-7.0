@@ -35,6 +35,7 @@ export interface PriceHistory {
 
 export interface ProductEntry {
   keywords: string[];
+  aliases: string[];
   category: keyof typeof mockSpendingData.categories;
   alternatives: Alternative[];
   brand: string;
@@ -62,6 +63,14 @@ export const mockSpendingData = {
 export const productDatabase: ProductEntry[] = [
   {
     keywords: ["iphone", "apple phone", "iphone 15", "iphone 14", "iphone 16"],
+    aliases: [
+      "iphone", "apple iphone", "apple phone",
+      "iphone 14", "iphone 14 pro", "iphone 14 pro max",
+      "iphone 15", "iphone 15 pro", "iphone 15 pro max",
+      "iphone 16", "iphone 16 pro", "iphone 16 pro max",
+      "apple iphone 14", "apple iphone 15", "apple iphone 16",
+      "apple iphone 16 pro",
+    ],
     category: "electronics",
     brand: "Apple",
     ecosystem: "apple",
@@ -79,6 +88,12 @@ export const productDatabase: ProductEntry[] = [
   },
   {
     keywords: ["macbook", "macbook pro", "macbook air", "apple laptop"],
+    aliases: [
+      "macbook", "macbook pro", "macbook air", "apple macbook", "apple laptop",
+      "macbook air m1", "macbook air m2", "macbook air m3",
+      "macbook pro 14", "macbook pro 16",
+      "macbook pro m3", "macbook pro m4",
+    ],
     category: "electronics",
     brand: "Apple",
     ecosystem: "apple",
@@ -96,6 +111,11 @@ export const productDatabase: ProductEntry[] = [
   },
   {
     keywords: ["airpods", "airpods pro", "apple earbuds"],
+    aliases: [
+      "airpods", "apple airpods", "apple earbuds",
+      "airpods pro", "airpods pro 2", "airpods pro 2nd generation",
+      "airpods max", "airpods 3", "airpods 4",
+    ],
     category: "electronics",
     brand: "Apple",
     ecosystem: "apple",
@@ -114,6 +134,13 @@ export const productDatabase: ProductEntry[] = [
   },
   {
     keywords: ["headphones", "over-ear headphones", "wireless headphones"],
+    aliases: [
+      "headphones", "wireless headphones", "over ear headphones",
+      "over-ear headphones", "bluetooth headphones",
+      "noise cancelling headphones", "noise canceling headphones",
+      "sony wh-1000xm5", "sony wh1000xm5", "sony wh 1000xm5",
+      "sony headphones", "wh-1000xm5", "wh1000xm5",
+    ],
     category: "electronics",
     brand: "Various",
     ecosystem: "generic",
@@ -131,6 +158,12 @@ export const productDatabase: ProductEntry[] = [
   },
   {
     keywords: ["ipad", "apple tablet", "ipad pro", "ipad air"],
+    aliases: [
+      "ipad", "apple ipad", "apple tablet",
+      "ipad pro", "ipad pro 11", "ipad pro 13",
+      "ipad air", "ipad air m2", "ipad air m3",
+      "ipad mini", "ipad mini 6", "ipad mini 7",
+    ],
     category: "electronics",
     brand: "Apple",
     ecosystem: "apple",
@@ -148,6 +181,15 @@ export const productDatabase: ProductEntry[] = [
   },
   {
     keywords: ["samsung galaxy", "galaxy s24", "galaxy s25", "galaxy s23", "galaxy phone", "samsung phone"],
+    aliases: [
+      "samsung galaxy", "samsung phone", "samsung smartphone", "galaxy phone",
+      "galaxy s23", "galaxy s24", "galaxy s25",
+      "samsung galaxy s23", "samsung galaxy s24", "samsung galaxy s25",
+      "galaxy a14", "galaxy a14 5g", "galaxy a55", "galaxy a35",
+      "samsung galaxy a14", "samsung galaxy a14 5g",
+      "samsung galaxy a55", "samsung galaxy a35",
+      "samsung galaxy a14 5g", "galaxy a14 5g",
+    ],
     category: "electronics",
     brand: "Samsung",
     ecosystem: "android",
@@ -165,6 +207,11 @@ export const productDatabase: ProductEntry[] = [
   },
   {
     keywords: ["samsung tv", "lg tv", "sony tv", "4k tv", "television", "smart tv", "oled"],
+    aliases: [
+      "tv", "television", "smart tv", "4k tv", "oled tv", "qled tv",
+      "samsung tv", "lg tv", "sony tv", "hisense tv", "tcl tv",
+      "55 inch tv", "65 inch tv", "4k television",
+    ],
     category: "electronics",
     brand: "Various",
     ecosystem: "generic",
@@ -182,6 +229,12 @@ export const productDatabase: ProductEntry[] = [
   },
   {
     keywords: ["ps5", "playstation 5", "playstation"],
+    aliases: [
+      "ps5", "playstation 5", "playstation", "sony ps5", "playstation5",
+      "ps5 digital", "ps5 digital edition",
+      "playstation 5 digital", "playstation 5 digital edition",
+      "playstation 5 slim", "ps5 slim",
+    ],
     category: "entertainment",
     brand: "Sony",
     ecosystem: "playstation",
@@ -199,6 +252,11 @@ export const productDatabase: ProductEntry[] = [
   },
   {
     keywords: ["xbox", "xbox series x", "xbox series s"],
+    aliases: [
+      "xbox", "xbox series x", "xbox series s", "microsoft xbox",
+      "xbox series", "xbox one", "xbox one x",
+      "xbox series x s", "xbox controller",
+    ],
     category: "entertainment",
     brand: "Microsoft",
     ecosystem: "xbox",
@@ -216,6 +274,12 @@ export const productDatabase: ProductEntry[] = [
   },
   {
     keywords: ["nike", "nike shoes", "air max", "nike sneakers", "air force"],
+    aliases: [
+      "nike", "nike shoes", "nike sneakers",
+      "air max", "nike air max", "air max 270", "nike air max 270",
+      "air force 1", "nike air force 1", "air force", "nike air force",
+      "nike revolution", "nike react",
+    ],
     category: "clothing",
     brand: "Nike",
     ecosystem: "nike",
@@ -233,6 +297,13 @@ export const productDatabase: ProductEntry[] = [
   },
   {
     keywords: ["adidas", "yeezy", "stan smith", "adidas shoes"],
+    aliases: [
+      "adidas", "adidas shoes", "adidas sneakers",
+      "stan smith", "adidas stan smith",
+      "yeezy", "adidas yeezy",
+      "ultraboost", "adidas ultraboost",
+      "adidas lite racer", "adidas gazelle",
+    ],
     category: "clothing",
     brand: "Adidas",
     ecosystem: "adidas",
@@ -250,6 +321,12 @@ export const productDatabase: ProductEntry[] = [
   },
   {
     keywords: ["north face", "jacket", "winter jacket", "puffer jacket", "down jacket"],
+    aliases: [
+      "north face", "the north face", "north face jacket",
+      "winter jacket", "puffer jacket", "down jacket",
+      "north face hoodie", "north face gilet",
+      "north face nuptse", "north face 1996",
+    ],
     category: "clothing",
     brand: "The North Face",
     ecosystem: "north-face",
@@ -267,6 +344,11 @@ export const productDatabase: ProductEntry[] = [
   },
   {
     keywords: ["nespresso", "coffee machine", "espresso machine", "coffee maker"],
+    aliases: [
+      "nespresso", "nespresso machine", "coffee machine", "coffee maker",
+      "espresso machine", "nespresso vertuo", "nespresso essenza",
+      "nespresso citiz", "nespresso lattissima",
+    ],
     category: "home",
     brand: "Nespresso",
     ecosystem: "nespresso",
@@ -284,6 +366,11 @@ export const productDatabase: ProductEntry[] = [
   },
   {
     keywords: ["dyson", "vacuum", "dyson vacuum", "robot vacuum"],
+    aliases: [
+      "dyson", "dyson vacuum", "vacuum cleaner", "dyson vacuum cleaner",
+      "dyson v8", "dyson v10", "dyson v11", "dyson v12", "dyson v15",
+      "robot vacuum", "dyson ball", "dyson outsize",
+    ],
     category: "home",
     brand: "Dyson",
     ecosystem: "dyson",
@@ -301,6 +388,11 @@ export const productDatabase: ProductEntry[] = [
   },
   {
     keywords: ["gym", "gym membership", "fitness membership", "crossfit"],
+    aliases: [
+      "gym", "gym membership", "fitness membership",
+      "crossfit membership", "basic-fit", "basic fit",
+      "anytime fitness", "sport membership",
+    ],
     category: "sports",
     brand: "Various",
     ecosystem: "generic",
@@ -313,6 +405,12 @@ export const productDatabase: ProductEntry[] = [
   },
   {
     keywords: ["laptop", "notebook", "computer", "pc"],
+    aliases: [
+      "laptop", "notebook", "windows laptop", "gaming laptop",
+      "budget laptop", "student laptop", "office laptop",
+      "dell laptop", "hp laptop", "lenovo laptop", "asus laptop", "acer laptop",
+      "dell xps", "hp pavilion", "lenovo ideapad", "asus zenbook",
+    ],
     category: "electronics",
     brand: "Various",
     ecosystem: "windows",

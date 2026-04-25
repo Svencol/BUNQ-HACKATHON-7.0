@@ -14,6 +14,10 @@ export async function POST(req: NextRequest) {
     }
     const price = typeof productPrice === "number" && productPrice > 0 ? productPrice : 0;
 
+    if (price > 50000) {
+      return NextResponse.json({ error: "Price looks unusual. Please check the amount." }, { status: 400 });
+    }
+
     const result = analyzeProduct(
       productName.trim(),
       price,
@@ -21,8 +25,8 @@ export async function POST(req: NextRequest) {
       typeof userBudget === "number" && userBudget > 0 ? userBudget : undefined
     );
 
-    // Skip AI explanation when price is unknown — static message is sufficient
-    if (result.recommendation === "PRICE_NEEDED") {
+    // Skip AI explanation when price is unknown or product is unknown
+    if (result.recommendation === "PRICE_NEEDED" || result.fallback) {
       return NextResponse.json(result);
     }
 

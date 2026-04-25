@@ -52,6 +52,8 @@ export default function Home() {
   const [scanHint, setScanHint]         = useState('');
   const [fetchingUrl, setFetchingUrl]   = useState(false);
   const [urlHint, setUrlHint]           = useState('');
+  const [inputSource, setInputSource]   = useState<'manual' | 'image' | 'url'>('manual');
+  const [hadImageScan, setHadImageScan] = useState(false);
   const fileInputRef                    = useRef<HTMLInputElement>(null);
   const resultsRef                      = useRef<HTMLDivElement>(null);
 
@@ -86,8 +88,12 @@ export default function Home() {
       } else if (data.isProduct === false) {
         setScanHint('No product detected — fill in manually');
       } else if (data.name && data.needsManualPrice) {
+        setInputSource('image');
+        setHadImageScan(true);
         setScanHint(`Found "${data.name}" — please enter the price`);
       } else if (data.name || data.price != null) {
+        setInputSource('image');
+        setHadImageScan(true);
         setScanHint(`Detected: ${data.name ?? '?'} — €${data.price ?? '?'}`);
       } else {
         setScanHint('Could not read product info — fill in manually');
@@ -114,6 +120,9 @@ export default function Home() {
       if (data.error) { setUrlHint(data.error); return; }
       if (data.productName) setProductName(data.productName);
       if (data.price != null) setProductPrice(String(data.price));
+      if (data.productName || data.price != null) {
+        setInputSource('url');
+      }
       setUrlHint(
         data.productName || data.price != null
           ? `Got: ${data.productName ?? '?'} — €${data.price ?? '?'}`
@@ -237,13 +246,27 @@ export default function Home() {
               </label>
               <input
                 type="text" value={productName}
-                onChange={(e) => setProductName(e.target.value)}
+                onChange={(e) => {
+                  setProductName(e.target.value);
+                  if (inputSource !== 'manual') setInputSource('manual');
+                }}
                 placeholder="iPhone 15 Pro, Dyson V12, Nike Air Max…"
                 required className="input-dark"
               />
-              <p className="text-[11px] text-gray-700 mt-1.5">
-                Try: iPhone 16 Pro, Samsung Galaxy S24, PlayStation 5
-              </p>
+              {inputSource === 'image' && (
+                <p className="text-[11px] text-gray-500 mt-1.5">Detected from image</p>
+              )}
+              {inputSource === 'url' && (
+                <p className="text-[11px] text-gray-500 mt-1.5">Detected from URL</p>
+              )}
+              {inputSource === 'manual' && hadImageScan && (
+                <p className="text-[11px] text-amber-500 mt-1.5">Manual edits replace the scanned product.</p>
+              )}
+              {inputSource === 'manual' && !hadImageScan && (
+                <p className="text-[11px] text-gray-700 mt-1.5">
+                  Try: iPhone 16 Pro, Samsung Galaxy A14 5G, PlayStation 5
+                </p>
+              )}
             </div>
 
             {/* Price + Budget */}
@@ -505,9 +528,7 @@ function EcosystemAlternatives({ result }: { result: AnalysisResult }) {
                   {' '}→ Save <span className="text-[#FF7819] font-bold">€{result.estimatedSavings.toLocaleString()}</span>
                 </p>
               )}
-              <button className="w-full border border-white/[0.08] hover:border-white/20 text-gray-500 hover:text-gray-300 font-semibold py-2.5 rounded-full text-sm transition-colors">
-                Keep original choice
-              </button>
+              <p className="text-xs text-gray-700">Original choice kept as reference</p>
             </div>
           )}
         </div>
@@ -554,9 +575,7 @@ function EcosystemAlternatives({ result }: { result: AnalysisResult }) {
                   {' '}→ Save <span className="text-[#FF7819] font-bold">€{result.estimatedSavings.toLocaleString()}</span>
                 </p>
               )}
-              <button className="w-full border border-white/[0.08] hover:border-white/20 text-gray-500 hover:text-gray-300 font-semibold py-2.5 rounded-full text-sm transition-colors">
-                Keep original choice
-              </button>
+              <p className="text-xs text-gray-700">Original choice kept as reference</p>
             </div>
           )}
         </div>
@@ -618,7 +637,7 @@ function EcosystemAlternatives({ result }: { result: AnalysisResult }) {
 
 /* ── Fallback card (unknown product) ─────────────────────────────────── */
 
-const DEMO_SUGGESTIONS = ['iPhone 16 Pro', 'Samsung Galaxy S24', 'PlayStation 5'];
+const DEMO_SUGGESTIONS = ['iPhone 16 Pro', 'Samsung Galaxy A14 5G', 'PlayStation 5', 'Sony WH-1000XM5'];
 
 function FallbackCard({ productName }: { productName: string }) {
   return (

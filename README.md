@@ -1,76 +1,77 @@
-# AI Financial Assistant
+# bunq Purchase Advisor
 
-> Hackathon MVP — Should you buy it? Get a smart purchase recommendation based on your spending habits.
+An AI purchase decision assistant that helps users decide whether to buy, wait, or choose a better option before spending.
 
-## What it does
+## Problem
 
-Enter any product name and price. The app will:
+People often make purchase decisions without enough financial context. They may overspend, miss cheaper vendors, or ignore better alternatives. Banking apps typically show spending after it happens — not before.
 
-1. **Identify cheaper alternatives** from a curated product database
-2. **Calculate estimated savings** if you choose an alternative
-3. **Give a clear recommendation**: Buy / Wait / Choose Alternative
-4. **Explain the reasoning** based on mock spending data (budget usage, category overspend, savings goal)
+## Solution
 
-## Quick start
+The app answers: **Should I buy this?**
 
-```bash
-npm install
-npm run dev
-```
+- User can scan a product image, paste a URL, or enter product details manually
+- The app compares mocked vendor prices, alternatives, and simulated bunq spending context
+- It returns one clear decision: **BUY**, **WAIT**, or **CHOOSE_ALTERNATIVE**
 
-Open [http://localhost:3000](http://localhost:3000)
+## How it works
 
-## How to use
+1. Input product by image, URL, or manual entry
+2. AI extracts product details from image or URL
+3. Deterministic analyzer compares vendor prices, alternatives, budget, and spending context
+4. App returns a clear financial recommendation
 
-1. Check your **budget overview** at the top — see what you've spent this month
-2. Enter a **product name** (e.g. `iPhone 15 Pro`, `MacBook Air`, `Dyson V12`, `Nike Air Max`)
-3. Enter the **price in euros**
-4. Optionally paste a **product link**
-5. Click **Analyze Purchase**
-6. See: alternatives, savings estimate, recommendation, and spending context
+## AI usage
 
-## Example products to try
+- Anthropic vision model extracts product name and price from images
+- Anthropic text model generates a short, human-readable explanation of the recommendation
+- AI handles input understanding and explanation only
+- Final decision logic is fully deterministic — for trust and consistency
 
-| Product | Price |
-|---|---|
-| iPhone 15 Pro | €1199 |
-| MacBook Air M2 | €1299 |
-| Sony WH-1000XM5 | €349 |
-| Dyson V12 | €599 |
-| Nike Air Max 270 | €150 |
-| PS5 | €499 |
+## Multimodal aspect
+
+Image scanning is the non-text modality. Users can photograph a product or price tag instead of typing. This makes the experience faster and more natural than manual entry.
+
+## Key features
+
+- Image-based product scan
+- URL and manual product input
+- Mock vendor price comparison
+- Ecosystem-aware alternative recommendations
+- Clear BUY / WAIT / CHOOSE_ALTERNATIVE decision
+
+## bunq integration
+
+This prototype is designed as a bunq-style pre-purchase feature. It uses simulated bunq spending context for demo reliability. In production, it would connect to bunq transaction data to personalize purchase recommendations based on real budget usage, category spend, and savings goals.
 
 ## Tech stack
 
-- **Next.js 14** (App Router, TypeScript)
-- **Tailwind CSS** — styling
-- **Mock data only** — no auth, no database, no external APIs
+- Next.js 14 App Router
+- TypeScript
+- Tailwind CSS
+- Anthropic SDK
 
-## Project structure
+## Setup
 
-```
-src/
-  app/
-    page.tsx              # Main UI (client component)
-    globals.css           # Tailwind + base styles
-    api/
-      analyze/
-        route.ts          # POST /api/analyze — runs the analysis
-  lib/
-    mockData.ts           # Mock spending data + product alternatives database
-    analyzer.ts           # Recommendation logic (BUY / WAIT / CHOOSE_ALTERNATIVE)
+```bash
+npm install
+cp .env.example .env.local
+npm run dev
 ```
 
-## Recommendation logic
+## Environment variables
 
-| Condition | Result |
-|---|---|
-| Cheaper alternative saves ≥ 25% | Choose Alternative |
-| Over category budget OR can't afford from monthly buffer | Wait |
-| Otherwise | Buy |
+```
+ANTHROPIC_API_KEY=your_key_here
+```
 
-## Mock data
+## Demo notes
 
-- Monthly budget: **€2,500** (€1,920 spent)
-- Savings goal: **€500** (€290 saved)
-- Product database covers: phones, laptops, earbuds, headphones, tablets, TVs, gaming consoles, shoes, jackets, coffee machines, vacuums, and more
+- Vendor prices are mocked
+- bunq spending context is simulated
+- Product data is demo-focused (16 products with explicit alias matching)
+- The goal is to demonstrate the decision flow and user value, not live data integrations
+
+## Why it matters
+
+This helps users make smarter spending decisions before money leaves their account. Instead of only reviewing purchases after the fact, the app gives real-time financial guidance at the moment of purchase — directly in the context of a banking experience.
